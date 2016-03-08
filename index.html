@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!-- HTML5 Hello world by kirupa - http://www.kirupa.com/html5/getting_your_feet_wet_html5_pg1.htm -->
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<title>Flexbox デモページ</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-spy="scroll" data-target="#header-nav" data-offset="70">
+	<header>
+        <nav id="header-nav" class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"><i class="fa fa-bars"></i></button>
+                    <h1 class="navbar-brand">flexbox demo</h1>
+                </div>
+                <div id="navbar-collapse" class="collapse navbar-collapse">
+                    <button class="btn btn-primary navbar-btn navbar-right" data-toggle="modal" data-target="#property-form-wrapper">プロパティを変える</button>
+                </div>
+            </div>
+        </nav>
+	</header>
+	<main id="flex-wrapper" class="container">
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+	</main>
+	<div id="property-form-wrapper" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="propety-form-label">
+		<div class="modal-dialog" role="document">
+			<form id="property-form" method="GET" action="/index.html" class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+					<h3 id="property-form-label" class="modal-title">プロパティを選択</h3>
+				</div>
+				<div class="modal-body">
+					<p>各ボックスのサイズは100x100です。</p>
+					<div class="form-group">
+						<label for="select-box-count">box数</label>
+						<input type="number" id="select-box-count" class="form-control" name="box-count" min="1" max="15" value="4" placeholder="1~15">
+					</div>
+					<div class="form-group">
+						<label for="select-align-content">align-content</label>
+						<select id="select-align-content" class="form-control" name="align-content">
+							<option>flex-start</option>
+							<option>flex-end</option>
+							<option>center</option>
+							<option>space-between</option>
+							<option>space-around</option>
+							<option selected>stretch</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="select-align-items">align-items</label>
+						<select id="select-align-items" class="form-control" name="align-items">
+							<option>flex-start</option>
+							<option>flex-end</option>
+							<option>center</option>
+							<option>baseline</option>
+							<option selected>stretch</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="select-flex-basis">flex-basis</label>
+						<input type="text" id="select-flex-basis" class="form-control" name="flex-basis" placeholder="'auto'または数値（単位省略時はpx）" value="auto">
+					</div>
+					<div class="form-group">
+						<label for="select-flex-direction">flex-direction</label>
+						<select id="select-flex-direction" class="form-control" name="flex-direction">
+							<option selected>row</option>
+							<option>row-reverse</option>
+							<option>column</option>
+							<option>column-reverse</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="select-flex−grow">flex−grow</label>
+						<input type="text" id="select-flex−grow" class="form-control" name="flex−grow" value="0" placeholder="数値">
+					</div>
+					<div class="form-group">
+						<label for="select-flex-shrink">flex-shrink</label>
+						<input type="text" id="select-flex-shrink" class="form-control" name="flex-shrink" value="1" placeholder="数値">
+					</div>
+					<div class="form-group">
+						<label for="select-flex-wrap">flex-wrap</label>
+						<select id="select-flex-wrap" class="form-control" name="flex-wrap">
+							<option selectend>nowrap</option>
+							<option>wrap</option>
+							<option>wrap-reverse</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="select-justify-content">justify-content</label>
+						<select id="select-justify-content" class="form-control" name="justify-content">
+							<option selected>flex-start</option>
+							<option>flex-end</option>
+							<option>center</option>
+							<option>space-between</option>
+							<option>space-around</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="select-order">order</label>
+						<input type="number" id="select-order" class="form-control" name="order" value="0">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+					<butotn id="property-form-submit" type="button" class="btn btn-primary">設定</butotn>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script>
+	    $(function() {
+	    	$("#property-form-submit").on("click", function() {
+	    		var property = $(this).parents("#property-form").serializeArray(), wrapper_property = {}, box_property = {};
+	    		for (var i in property) {
+	    			var name = property[i].name
+	    			if (name == "flex−grow" || name == "flex-basis" || name == "flex-shrink") {
+	    				box_property[name] = property[i].value;
+	    			} else if (name == "box-count") {
+	    				var box_count = parseInt(property[i].value);
+	    				$("#flex-wrapper").html(
+	    					(function() {
+	    						var html = "";
+	    						for (var i = 0; i < box_count; i++) {
+	    							html += "<div class='box'></div>";
+	    						}
+	    						return html;
+	    					})()
+	    				)
+	    			} else {
+	    				wrapper_property[name] = property[i].value;
+	    			}
+	    		}
+	    		$("#flex-wrapper").css(wrapper_property).children().css(box_property);
+	    		$(this).parents(".modal").modal("hide");
+	    	});
+	    });
+    </script>
